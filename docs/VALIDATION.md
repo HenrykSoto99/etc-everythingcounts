@@ -23,3 +23,9 @@ El handoff usa versión durable y bloqueo de fila antes de guardar una respuesta
 La conexión real de WhatsApp y el onboarding del número del cliente no se han activado ni probado. La demo no equivale a un servicio con SLA, campañas masivas, plantillas Meta aprobadas, invitaciones multiusuario ni agente autónomo real. La autenticación usa el flujo y validación reales de plataforma; la revisión verificó controles de JWT y ausencia de acceso anónimo, no un login manual completo de un cliente desde navegador.
 
 La publicación y la transferencia a GitHub se confirman por sus recibos de plataforma; no se deben inferir a partir de un build, de Preview o de un commit local.
+
+## Estado de entrega
+
+El checkpoint funcional `83f5fdb5cd8687392de56e5de9b492b489d241c7` fue confirmado por la plataforma. La transferencia al repositorio privado `https://github.com/HenrykSoto99/etc-everythingcounts` fue verificada y completada, y GitHub es el repositorio activo del proyecto.
+
+El servicio de Preview fue reiniciado con el entorno sincronizado y respondió correctamente. La publicación por la herramienta del asistente fue rechazada porque el repositorio activo está en GitHub: para este proyecto la publicación se realiza desde el panel del proyecto. Queda pendiente pulsar Publicar en dicho panel y comprobar su resultado. No hay todavía una URL pública permanente confirmada; Preview no equivale a una publicación.

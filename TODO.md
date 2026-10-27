@@ -10,6 +10,8 @@
 - [x] Adaptador Cloud API preparado y desactivado por defecto: secretos server-side, scoping a cliente, HMAC y deduplicación de entradas, controles de ventana; conexión real pendiente sin credenciales y versión validada de Meta.
 - [x] Navegación y formularios responsive, acciones persistentes con avisos de éxito/error y distinción entre simulación y operación real; sin botones de notificaciones ficticios.
 - [x] Atribución y licencia de las piezas open source adaptadas; documentación de despliegue, diferencias de arquitectura, preparación por cliente y limitaciones; escaneo de identidad excluida y secretos antes de guardar.
-- [ ] Tipos, build y pruebas de scoping/handoff/ventana correctos; revisión de integración completada. Pendiente checkpoint confirmado y publicación por el flujo autorizado. GitHub privado requiere confirmación del propietario y transferencia completada, sin atribuir conexión antes de su recibo.
+- [x] Tipos, build y pruebas de scoping/handoff/ventana correctos; revisión de integración completada y checkpoint confirmado `83f5fdb5cd8687392de56e5de9b492b489d241c7`.
+- [x] GitHub privado con confirmación del propietario y transferencia verificada/completada en `HenrykSoto99/etc-everythingcounts`.
+- [ ] Publicación con URL permanente: con GitHub como repositorio activo, la publicación está disponible desde el panel del proyecto, no por la herramienta de publicación del asistente. Pendiente pulsar Publicar en el panel. No se afirma una URL pública ni un despliegue exitoso.
 
 Evidencia y límites de las comprobaciones en `docs/VALIDATION.md`. No se activó ni se probó WhatsApp real.
