@@ -7,6 +7,10 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Landing from "./pages/etc/Landing";
 import Privacy from "./pages/etc/Privacy";
 import Crm from "./pages/etc/Crm";
+import Access from "./pages/etc/Access";
+import { I18nProvider } from "./contexts/I18nContext";
+import Guides from './pages/etc/Guides';
+import { RESOURCE_SLUGS } from './pages/etc/resources';
 
 const sections = new Set([
   "overview",
@@ -14,6 +18,7 @@ const sections = new Set([
   "pipeline",
   "contacts",
   "knowledge",
+  "consultations",
   "followups",
   "settings",
 ]);
@@ -32,6 +37,12 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/privacidad" component={Privacy} />
+      <Route path="/recursos"><Guides /></Route>
+      <Route path="/recursos/:slug">{params => RESOURCE_SLUGS.includes(params.slug as any) ? <Guides slug={params.slug} /> : <NotFound />}</Route>
+      <Route path="/login"><Access mode="login" /></Route>
+      <Route path="/register"><Access mode="register" /></Route>
+      <Route path="/forgot-password"><Access mode="forgot" /></Route>
+      <Route path="/reset-password"><Access mode="reset" /></Route>
       <Route path="/demo">
         <CrmRoute mode="demo" />
       </Route>
@@ -52,11 +63,13 @@ function Router() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="light">
+      <ThemeProvider defaultTheme="light" switchable>
+        <I18nProvider>
         <TooltipProvider>
           <Toaster />
           <Router />
         </TooltipProvider>
+        </I18nProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

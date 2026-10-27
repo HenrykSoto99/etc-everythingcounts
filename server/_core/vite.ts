@@ -62,6 +62,12 @@ export function serveStatic(app: Express) {
   app.get("/privacidad", (_req, res) => {
     res.sendFile(path.resolve(distPath, "privacidad.html"));
   });
+  app.get('/recursos', (_req, res) => res.sendFile(path.resolve(distPath, 'recursos.html')));
+  app.get('/recursos/:slug', (req, res) => {
+    const slug = req.params.slug;
+    if (['primeros-pasos','whatsapp-meta','api','agentes','integraciones','alianzas'].includes(slug)) return res.sendFile(path.resolve(distPath, `resource-${slug}.html`));
+    return res.status(404).set('X-Robots-Tag','noindex').sendFile(path.resolve(distPath,'404.html'));
+  });
 
   // the app's not-found page keeps a real 404 status for crawlers
   app.get("/404", (_req, res) => {
@@ -70,7 +76,7 @@ export function serveStatic(app: Express) {
 
   // Only known CRM routes get the SPA; unknown URLs keep their true status.
   app.get("*", (req, res) => {
-    const known = /^\/(demo|app)(\/(overview|inbox|pipeline|contacts|knowledge|followups|settings))?\/?$/.test(req.path);
+    const known = /^\/(demo|app)(\/(overview|inbox|pipeline|contacts|knowledge|consultations|followups|settings))?\/?$/.test(req.path) || ['/login','/register','/forgot-password','/reset-password'].includes(req.path);
     if (known || req.path === "/") {
       res.set("Cache-Control", "private, no-store").sendFile(path.resolve(distPath, "index.html"));
       return;

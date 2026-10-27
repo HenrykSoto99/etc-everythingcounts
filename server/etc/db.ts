@@ -14,6 +14,7 @@ import type {
   Workspace,
 } from "@shared/etc/types";
 import { isWindowOpen } from "@shared/etc/window";
+import { isBusinessType, type BusinessType } from "@shared/etc/segments";
 
 export type DbRow = Record<string, any>;
 export type LiveUser = {
@@ -109,6 +110,7 @@ export function workspaceFromRow(
     id: String(row.id),
     name: String(row.name),
     segment: row.segment as Segment,
+    businessType: isBusinessType(row.business_type) ? row.business_type : 'general',
     agentName: String(row.agent_name),
     tone: String(row.tone),
     description: String(row.description),
@@ -241,10 +243,21 @@ const presets: Record<
       "Recogemos los datos básicos y una persona confirma el alcance.",
     ],
   },
+  financieros: {
+    name: 'Finanzas Cercanas Demo', agentName: 'Sara', tone: 'Clara, prudente y profesional',
+    description: 'Operación ficticia de atención y seguimiento para servicios financieros, sin asesoría de inversión ni decisiones crediticias.', color: '#4D7C8A',
+    faq: ['Seguimiento de solicitudes', 'Registramos la solicitud y la remitimos a una persona autorizada. No aprobamos créditos ni recomendamos inversiones.'],
+  },
+  pymes: {
+    name: 'Mi Negocio Demo', agentName: 'Alex', tone: 'Cercana y práctica',
+    description: 'Operación ficticia de una PYME: citas, clientes, atención y seguimiento según el tipo de negocio.', color: '#8FAD88',
+    faq: ['Atención de tu negocio', 'Organizamos consultas, citas y seguimientos. Las políticas y horarios deben confirmarse con el negocio.'],
+  },
 };
 
 export async function createDemo(
-  segment: Segment
+  segment: Segment,
+  businessType: BusinessType = 'general'
 ): Promise<{
   token: string;
   workspace: Workspace & { ownerUserId: number | null };
@@ -271,6 +284,7 @@ export async function createDemo(
         1,
       ]
     );
+    await conn.execute('UPDATE etc_workspaces SET business_type=? WHERE id=?', [segment === 'pymes' ? businessType : 'general', workspaceId]);
     await conn.execute(
       "INSERT INTO etc_demo_sessions (id,token_hash,workspace_id,expires_at) VALUES (?,?,?,?)",
       [

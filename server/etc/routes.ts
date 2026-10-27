@@ -12,6 +12,9 @@ import express, {
   Router,
 } from "express";
 import { sdk } from "../_core/sdk";
+import { resolveEmailUser } from './auth';
+import { registerConsultationRoutes } from './consultation';
+import { registerLlmConfigRoutes } from './llm-config';
 import type {
   Contact,
   Knowledge,
@@ -20,6 +23,7 @@ import type {
   Task,
 } from "@shared/etc/types";
 import { isWindowOpen } from "@shared/etc/window";
+import { SEGMENTS, isBusinessType } from '@shared/etc/segments';
 import {
   generateSuggestion,
   faqFallback,
@@ -52,12 +56,7 @@ import {
   workspaceFromRow,
 } from "./db";
 
-const segments: Segment[] = [
-  "inmobiliaria",
-  "educacion",
-  "retail",
-  "servicios",
-];
+const segments: Segment[] = SEGMENTS;
 const stages: Stage[] = [
   "nuevo",
   "en_atencion",
@@ -212,7 +211,7 @@ async function authContext(req: EtcRequest): Promise<AuthContext> {
     const demo = await getDemoContext(hashDemoToken(token));
     if (demo) return demo;
   }
-  const user = await sdk.authenticateRequest(req);
+  const user = await resolveEmailUser(req) ?? await sdk.authenticateRequest(req);
   const liveUser: LiveUser = {
     id: Number(user.id),
     name: user.name,
@@ -371,9 +370,10 @@ async function handleDemo(req: Request, res: Response) {
   const body = req.body && typeof req.body === "object" ? req.body : {};
   const segment = body.segment === undefined ? "inmobiliaria" : body.segment;
   if (!validSegment(segment)) return error(res, 400, "Segmento inválido");
+  if (body.businessType !== undefined && !isBusinessType(body.businessType)) return error(res, 400, 'Tipo de negocio inválido');
   if (!(await consumeDemoCreation()))
     return error(res, 429, "Límite diario de demos alcanzado");
-  const result = await createDemo(segment);
+  const result = await createDemo(segment, body.businessType ?? 'general');
   res.status(201).json({ token: result.token });
 }
 
@@ -1145,7 +1145,9 @@ async function suggestion(req: EtcRequest, res: Response, simulate: boolean) {
     input,
     history,
     await knowledgeFor(ctx.workspace.id),
-    profile
+    profile,
+    ctx.workspace.id,
+    req.headers['accept-language']?.toString().startsWith('en') ? 'en' : 'es'
   );
   if (simulate) {
     const persisted = await transaction(async conn => {
@@ -1164,7 +1166,7 @@ async function suggestion(req: EtcRequest, res: Response, simulate: boolean) {
         )
       )
         return false;
-      const persistedText = result.handoff ? HANDOFF_TEXT : result.text;
+      const persistedText = result.handoff ? (req.headers['accept-language']?.toString().startsWith('en') ? 'I do not have an approved answer for that. This conversation needs human review.' : HANDOFF_TEXT) : result.text;
       await conn.execute(
         "INSERT INTO etc_messages (id,conversation_id,role,text,status) VALUES (?,?,?,?,?)",
         [randomUUID(), found!.conversation.id, "ai", persistedText, "demo"]
@@ -1380,6 +1382,10 @@ async function patchWorkspace(req: EtcRequest, res: Response) {
     if (!validSegment(body.segment)) return error(res, 400, "segment inválido");
     assign("segment", body.segment);
   }
+  if (body.businessType !== undefined) {
+    if (!isBusinessType(body.businessType)) return error(res, 400, 'Tipo de negocio inválido');
+    assign('business_type', body.businessType);
+  }
   if (body.agentName !== undefined) {
     const v = text(body.agentName, 120);
     if (!v) return error(res, 400, "agentName inválido");
@@ -1468,6 +1474,12 @@ async function workspacePreset(req: EtcRequest, res: Response) {
       color: "#7F9C96",
       title: "Solicitud de presupuesto",
       content: "Recogemos los datos básicos y una persona confirma el alcance.",
+    },
+    financieros: {
+      name: 'Servicios Financieros', agentName: 'Sara', tone: 'Clara, prudente y profesional', description: 'Atención y seguimiento administrativo de solicitudes. Sin asesoría de inversión ni decisiones crediticias.', color: '#4D7C8A', title: 'Seguimiento de solicitudes', content: 'Una persona autorizada confirma los requisitos y próximos pasos. No se aprueban créditos ni se recomiendan inversiones automáticamente.',
+    },
+    pymes: {
+      name: 'Mi Negocio', agentName: 'Alex', tone: 'Cercana y práctica', description: 'Configura el tipo de PYME para organizar clientes, citas y seguimientos.', color: '#8FAD88', title: 'Atención de tu negocio', content: 'Los horarios, servicios y políticas deben revisarse y aprobarse por el negocio antes de responder.',
     },
   };
   const p = profile[segment];
@@ -1768,6 +1780,8 @@ export function registerEtcRoutes(app: Express): void {
     })
   );
   router.use(requireWorkspaceIntent);
+  registerConsultationRoutes(router);
+  registerLlmConfigRoutes(router);
   router.get("/session", asyncRoute(handleSession));
   router.get("/stats", asyncRoute(handleStats));
   router.get("/connection", asyncRoute(connection));

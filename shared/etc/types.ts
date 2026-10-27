@@ -1,4 +1,6 @@
-export type Segment = "inmobiliaria" | "educacion" | "retail" | "servicios";
+import type { BusinessType } from './segments';
+
+export type Segment = "inmobiliaria" | "educacion" | "retail" | "servicios" | "financieros" | "pymes";
 export type Stage =
   | "nuevo"
   | "en_atencion"
@@ -10,6 +12,7 @@ export type Workspace = {
   id: string;
   name: string;
   segment: Segment;
+  businessType?: BusinessType;
   agentName: string;
   tone: string;
   description: string;

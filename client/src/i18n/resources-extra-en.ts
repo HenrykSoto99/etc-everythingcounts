@@ -1,0 +1,8 @@
+export const RESOURCE_EXTRA_EN: Record<string, string> = {
+  "Las rutas privadas aceptan la sesión propia creada con email y contraseña, una sesión OAuth válida o el token de demo. Usa `Authorization: Bearer <TOKEN>` y `X-ETC-Intent: workspace`; cada credencial limita el acceso a su espacio y la demo sólo permite datos ficticios.":
+    "Private routes accept an email/password session, a valid OAuth session, or a demo token. Use `Authorization: Bearer <TOKEN>` and `X-ETC-Intent: workspace`; each credential is limited to its workspace and demo access is restricted to fictional data.",
+  "Consultas IA usa `GET /consultations` y `POST /consultations`, con segmento, subtipo PYMES, idioma y clientId. El propietario configura su modelo con `GET/PATCH /llm/config`, `POST /llm/test` y `DELETE /llm/config`; las claves requieren cifrado habilitado y no se pueden leer de vuelta.":
+    "AI consultations use `GET /consultations` and `POST /consultations`, with segment, local-business type, language and clientId. The owner configures a model with `GET/PATCH /llm/config`, `POST /llm/test` and `DELETE /llm/config`; keys require enabled encryption and can never be read back.",
+  "El estado de conexión se consulta desde `GET /api/etc/connection`. El endpoint devuelve faltantes y ruta de webhook sin devolver secretos; cualquier faltante bloquea el envío real de mensajes, no la publicación de la demo.":
+    "Connection status is available at `GET /api/etc/connection`. It returns missing requirements and the webhook path without secrets; missing credentials block real message sending, not demo publication.",
+};

@@ -8,6 +8,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { registerEtcRoutes } from "../etc/routes";
+import { registerEmailAuthRoutes } from '../etc/auth';
 
 async function startServer() {
   const app = express();
@@ -17,9 +18,12 @@ async function startServer() {
     res.set("Cache-Control", "private, no-store");
     next();
   });
+  registerEmailAuthRoutes(app, { allowedOrigins: ['https://8328-i2puv5yg2y6jp1olvwtqn-ef7fe523.us5.manus.computer', 'http://localhost:3000', 'http://127.0.0.1:3000'] });
   registerEtcRoutes(app);
-  app.use(["/app", "/app/*", "/demo", "/demo/*"], (_req, res, next) => {
+  app.use(["/app", "/app/*", "/demo", "/demo/*", "/login", "/register", "/forgot-password", "/reset-password"], (_req, res, next) => {
     res.set("X-Robots-Tag", "noindex, nofollow");
+    res.set('Cache-Control', 'private, no-store');
+    res.set('Referrer-Policy', 'no-referrer');
     next();
   });
   // Configure body parser with larger size limit for file uploads

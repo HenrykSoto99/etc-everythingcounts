@@ -2337,3 +2337,492 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+.crm-topbar .etc-preferences,
+.crm-sidebar .etc-preferences {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.crm-topbar .etc-preferences {
+  margin-left: 2px;
+}
+.crm-sidebar .etc-preferences {
+  justify-content: flex-end;
+  margin: 14px 8px 0;
+}
+.crm-topbar .etc-preferences button,
+.crm-sidebar .etc-preferences button,
+.crm-topbar .etc-preferences select,
+.crm-sidebar .etc-preferences select {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.crm-topbar .etc-preferences button,
+.crm-sidebar .etc-preferences button {
+  display: inline-grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  border-radius: 6px;
+}
+.crm-topbar .etc-preferences button:hover,
+.crm-sidebar .etc-preferences button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.crm-topbar .etc-preferences label,
+.crm-sidebar .etc-preferences label {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: inherit;
+}
+.crm-topbar .etc-preferences select,
+.crm-sidebar .etc-preferences select {
+  min-height: 27px;
+  padding: 0 2px;
+  font-size: 9px;
+  font-weight: 700;
+}
+.crm-sidebar .etc-preferences {
+  color: #c7d6d5;
+}
+.crm-topbar .etc-preferences {
+  color: var(--etc-teal);
+}
+.crm-topbar-logout {
+  color: var(--etc-teal);
+}
+.crm-topbar-logout:hover {
+  color: var(--etc-danger);
+}
+.crm-consultation-scope {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 16px;
+  padding: 15px 18px;
+  border: 1px solid #d5e3dc;
+  border-radius: var(--etc-radius);
+  background: #f0f6f1;
+}
+.crm-consultation-scope > div {
+  display: grid;
+  gap: 4px;
+}
+.crm-consultation-scope .crm-eyebrow {
+  margin: 0;
+}
+.crm-consultation-scope strong {
+  color: var(--etc-navy);
+  font-size: 12px;
+}
+.crm-consultation-scope p {
+  max-width: 700px;
+  margin: 0;
+  color: var(--etc-muted);
+  font-size: 9px;
+}
+.crm-consultation-panel {
+  padding: 22px;
+}
+.crm-consultation-icon {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border-radius: 8px;
+  background: #edf3d9;
+  color: #738c52;
+}
+.crm-consultation-thread {
+  display: flex;
+  min-height: 280px;
+  max-height: 500px;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding: 13px;
+  border: 1px solid #e1e9e3;
+  border-radius: 10px;
+  background: #fbfcfa;
+}
+.crm-consultation-message {
+  max-width: min(720px, 86%);
+  padding: 10px 12px;
+  border: 1px solid #dbe6df;
+  border-radius: 10px;
+  background: #fff;
+}
+.crm-consultation-message.is-user {
+  align-self: flex-end;
+  border-color: #d1e2c1;
+  background: #eef6e7;
+}
+.crm-consultation-message.is-assistant {
+  align-self: flex-start;
+}
+.crm-consultation-message.is-pending {
+  opacity: 0.72;
+}
+.crm-consultation-author {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--etc-teal);
+  font-size: 8px;
+  font-weight: 700;
+}
+.crm-consultation-message p {
+  margin: 0;
+  color: var(--etc-ink);
+  font-size: 10px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+.crm-consultation-message time {
+  display: block;
+  margin-top: 6px;
+  color: #879690;
+  font-size: 8px;
+}
+.crm-consultation-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 13px;
+}
+.crm-consultation-prompt {
+  min-height: 29px;
+  padding: 0 9px;
+  border: 1px solid #d8e3d8;
+  border-radius: 6px;
+  background: #f7faf3;
+  color: #5e765d;
+  font-size: 9px;
+  text-align: left;
+}
+.crm-consultation-prompt:hover {
+  border-color: var(--etc-teal);
+  background: #eef6ed;
+}
+.crm-consultation-compose {
+  display: grid;
+  gap: 8px;
+  margin-top: 13px;
+}
+.crm-consultation-compose textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border: 1px solid #d7e1dc;
+  border-radius: 8px;
+  outline: 0;
+  background: #fff;
+  color: var(--etc-ink);
+  font-size: 10px;
+  resize: vertical;
+}
+.crm-consultation-compose textarea:focus {
+  border-color: var(--etc-teal);
+  box-shadow: 0 0 0 3px rgba(77, 124, 138, 0.11);
+}
+.crm-consultation-compose-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.crm-consultation-compose-foot > span {
+  color: var(--etc-muted);
+  font-size: 8px;
+}
+.crm-consultation-result-note,
+.crm-consultation-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 11px;
+  padding: 9px 10px;
+  border-radius: 7px;
+  background: #f4f7f1;
+  color: var(--etc-muted);
+  font-size: 9px;
+}
+.crm-consultation-result-note small {
+  margin-left: auto;
+  color: var(--etc-teal);
+  font-size: 8px;
+  white-space: nowrap;
+}
+.crm-consultation-badge {
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 4px 6px;
+  border-radius: 5px;
+  font-size: 8px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.crm-consultation-badge.is-llm {
+  background: #e8f1f6;
+  color: #416e82;
+}
+.crm-consultation-badge.is-fallback {
+  background: #f4f0dc;
+  color: #83703f;
+}
+.crm-consultation-badge.is-blocked {
+  background: #f7e9e5;
+  color: #9a5b50;
+}
+.crm-consultation-error {
+  align-items: flex-start;
+  border: 1px solid #ead4ca;
+  background: #fff9f6;
+  color: var(--etc-danger);
+}
+.crm-consultation-error .crm-button {
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+.crm-consultation-inline-error {
+  margin: 9px 0 0;
+  color: var(--etc-danger);
+  font-size: 9px;
+}
+.crm-llm-panel {
+  margin-top: 16px;
+  padding: 22px;
+}
+.crm-llm-notice,
+.crm-llm-status {
+  margin: 0;
+  padding: 10px;
+  border-radius: 7px;
+  background: #f3f7f3;
+  color: var(--etc-muted);
+  font-size: 9px;
+  line-height: 1.55;
+}
+.crm-field-help {
+  color: var(--etc-muted);
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+.crm-secret-input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 37px;
+  padding-left: 10px;
+  border: 1px solid #d9e2dc;
+  border-radius: 7px;
+  background: #fff;
+}
+.crm-secret-input:focus-within {
+  border-color: var(--etc-teal);
+  box-shadow: 0 0 0 3px rgba(77, 124, 138, 0.11);
+}
+.crm-secret-input input {
+  min-width: 0;
+  flex: 1;
+  min-height: 34px;
+  padding: 7px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+.crm-secret-input .crm-mini-icon {
+  margin: 0 3px 0 0;
+  color: var(--etc-teal);
+}
+.crm-llm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.crm-llm-actions .crm-button {
+  flex: 1 1 145px;
+}
+.etc-attribution {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 39px 23px;
+  color: var(--etc-muted);
+  font-size: 9px;
+}
+.etc-attribution a {
+  color: var(--etc-teal);
+  font-weight: 700;
+}
+.etc-social-links {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.etc-social-links a {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 6px;
+  background: #edf3ef;
+  color: var(--etc-teal);
+}
+.etc-social-links svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+html.dark .crm-shell {
+  --etc-bg: #101b27;
+  --etc-panel: #162635;
+  --etc-ink: #e4efee;
+  --etc-muted: #a7b8ba;
+  --etc-line: #334750;
+}
+html.dark .crm-topbar {
+  background: rgba(16, 27, 39, 0.94);
+  border-bottom-color: #334750;
+}
+html.dark .crm-panel,
+html.dark .crm-stat-card,
+html.dark .crm-consultation-message,
+html.dark .crm-secret-input,
+html.dark .crm-consultation-compose textarea,
+html.dark .crm-form input,
+html.dark .crm-form textarea,
+html.dark .crm-form select {
+  border-color: #3a5058;
+  background: #162635;
+  color: #e4efee;
+}
+html.dark .crm-consultation-thread {
+  border-color: #334750;
+  background: #12212d;
+}
+html.dark .crm-consultation-message.is-user {
+  border-color: #58725d;
+  background: #203528;
+}
+html.dark .crm-consultation-scope,
+html.dark .crm-consultation-result-note,
+html.dark .crm-llm-notice,
+html.dark .crm-llm-status {
+  border-color: #3a5058;
+  background: #1b302f;
+}
+html.dark .crm-consultation-prompt {
+  border-color: #49635f;
+  background: #1a302f;
+  color: #c8dfc5;
+}
+html.dark .etc-attribution {
+  color: #a7b8ba;
+}
+html.dark .etc-social-links a {
+  background: #1f3540;
+}
+
+@media (max-width: 760px) {
+  .crm-consultation-scope,
+  .crm-consultation-compose-foot,
+  .etc-attribution {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .crm-consultation-scope .crm-text-link {
+    align-self: flex-end;
+  }
+  .crm-consultation-compose-foot .crm-button {
+    width: 100%;
+  }
+  .etc-attribution {
+    padding: 0 17px 18px;
+  }
+}
+
+/* Small-screen readability and touch targets; board scroll stays contained. */
+@media (max-width: 760px) {
+  .crm-page .crm-section-description,
+  .crm-page .crm-consultation-scope p,
+  .crm-page .crm-empty p,
+  .crm-page .crm-consultation-panel p {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .crm-page input:not([type="checkbox"]):not([type="color"]),
+  .crm-page textarea,
+  .crm-page select,
+  .crm-modal input:not([type="checkbox"]):not([type="color"]),
+  .crm-modal textarea,
+  .crm-modal select {
+    font-size: 16px;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .crm-page .crm-button,
+  .crm-modal .crm-button {
+    min-height: 42px;
+    font-size: 12px;
+  }
+  .crm-consultation-composer textarea {
+    min-height: 86px;
+  }
+  .crm-page .crm-field-label {
+    font-size: 12px;
+  }
+  .crm-consultation-message p {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+  .crm-consultation-panel {
+    min-width: 0;
+  }
+  .crm-consultation-messages {
+    min-height: 230px;
+    max-height: 46svh;
+  }
+  .crm-page .crm-toolbar-row {
+    flex-wrap: wrap;
+  }
+  .crm-page .crm-toolbar-row .crm-search {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* Dark-theme foregrounds on the operational panels. */
+.dark .crm-page h1,
+.dark .crm-page h2,
+.dark .crm-page h3,
+.dark .crm-page h4,
+.dark .crm-consultation-scope strong,
+.dark .crm-modal h2,
+.dark .crm-table-person strong,
+.dark .crm-thread-head strong,
+.dark .crm-stat-card > strong,
+.dark .crm-stat-value,
+.dark .crm-stat-number {
+  color: #e8eee8;
+}
+.dark .crm-info-callout strong,
+.dark .crm-breadcrumbs strong,
+.dark .crm-breadcrumb strong,
+.dark .crm-crumb-current {
+  color: #cbdf90;
+}
+.dark .etc-preferences {
+  color: #cbdf90;
+}
+.dark .hero-copy h1 > span:after {
+  background: #cbdf9028;
+}

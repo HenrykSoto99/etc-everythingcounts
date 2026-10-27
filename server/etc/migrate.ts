@@ -1,4 +1,6 @@
 import mysql from "mysql2/promise";
+import { runEmailAuthMigration } from './auth/migrate';
+import { runConsultationMigration } from './consultation-migrate';
 
 const statements = [
   `CREATE TABLE IF NOT EXISTS etc_workspaces (
@@ -6,6 +8,7 @@ const statements = [
     owner_user_id INT NULL,
     mode VARCHAR(8) NOT NULL,
     segment VARCHAR(24) NOT NULL,
+    business_type VARCHAR(32) NOT NULL DEFAULT 'general',
     name VARCHAR(160) NOT NULL,
     agent_name VARCHAR(120) NOT NULL,
     tone VARCHAR(120) NOT NULL,
@@ -115,9 +118,16 @@ export async function runEtcMigration(databaseUrl = process.env.DATABASE_URL): P
   const pool = mysql.createPool(databaseUrl);
   try {
     for (const statement of statements) await pool.query(statement);
+    const [columns] = await pool.query("SHOW COLUMNS FROM etc_workspaces LIKE 'business_type'");
+    if (!(columns as unknown[]).length) {
+      try { await pool.query("ALTER TABLE etc_workspaces ADD COLUMN business_type VARCHAR(32) NOT NULL DEFAULT 'general'"); }
+      catch (error: any) { if (error?.code !== 'ER_DUP_FIELDNAME') throw error; }
+    }
   } finally {
     await pool.end();
   }
+  await runEmailAuthMigration(databaseUrl);
+  await runConsultationMigration(databaseUrl);
 }
 
 const isMain = process.argv[1]?.endsWith("server/etc/migrate.ts");
