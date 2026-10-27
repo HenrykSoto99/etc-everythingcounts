@@ -7,10 +7,21 @@ import { publicPlatformScript } from "./publicConfig";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { registerEtcRoutes } from "../etc/routes";
 
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  app.disable("x-powered-by");
+  app.use("/api/etc", (_req, res, next) => {
+    res.set("Cache-Control", "private, no-store");
+    next();
+  });
+  registerEtcRoutes(app);
+  app.use(["/app", "/app/*", "/demo", "/demo/*"], (_req, res, next) => {
+    res.set("X-Robots-Tag", "noindex, nofollow");
+    next();
+  });
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));

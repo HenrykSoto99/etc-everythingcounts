@@ -16,7 +16,7 @@ export function registerOAuthRoutes(app: Express) {
     const state = getQueryParam(req, "state");
 
     if (!code || !state) {
-      res.status(400).json({ error: "code and state are required" });
+      res.status(400).json({ error: "Faltan los datos del inicio de sesión" });
       return;
     }
 
@@ -56,10 +56,10 @@ export function registerOAuthRoutes(app: Express) {
       const cookieOptions = getSessionCookieOptions(req);
       res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
 
-      res.redirect(302, "/");
+      res.redirect(302, "/app");
     } catch (error) {
       console.error("[OAuth] Callback failed", error instanceof Error ? error.message : "unknown error");
-      res.status(500).json({ error: "OAuth callback failed" });
+      res.status(500).json({ error: "No se pudo completar el inicio de sesión" });
     }
   });
 }

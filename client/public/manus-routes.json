@@ -1,0 +1,1 @@
+{"routes":[{"path":"/","title":"ETC — EveryThingCounts"},{"path":"/privacidad","title":"Privacidad y alcance"},{"path":"/demo","title":"Demo ETC"},{"path":"/demo/:section","title":"Frontdesk de demostración"},{"path":"/app","title":"Espacio privado ETC"},{"path":"/app/:section","title":"Frontdesk privado"}]}

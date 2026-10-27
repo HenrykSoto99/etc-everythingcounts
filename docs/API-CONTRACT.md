@@ -1,0 +1,21 @@
+# Contrato ETC
+
+Base `/api/etc`, JSON directo (no envoltura `data`). Error `{error:string}` con HTTP apropiado. Tipos en `shared/etc/types.ts`. Todas las rutas salvo creación demo necesitan token demo en Authorization Bearer o cookie OAuth válida; el modo privado requiere OAuth. Cada registro se limita al workspace de la sesión. El token demo sólo da acceso a su instancia ficticia.
+
+- POST `/demo` body `{segment?:Segment}` -> `{token:string}`; crear sesión independiente demo y seed ficticio. TTL de demo: 8 horas.
+- GET `/session` -> Session; privada OAuth sin token demo crea espacio propio vacío si no existe.
+- GET `/stats` -> Stats.
+- GET `/contacts?search=...` -> Contact[]. POST `/contacts` body `{name,phone,email?,stage?,priority?,tags?,notes?,consent?}` -> Contact. `consent` debe ser booleano; teléfono/email tienen validación mínima y tags admiten hasta 10 elementos de 32 caracteres. PATCH `/contacts/:id` aplica las mismas validaciones.
+- GET `/conversations` -> Conversation[]. GET `/conversations/:id` -> `{conversation:Conversation,messages:Message[]}`.
+- POST `/conversations/:id/messages` body `{text,source:'human'|'customer',clientId?:string}` -> Message. `customer` exclusivamente en demo; `human` en demo sólo persiste simulación. En live `clientId` es obligatorio: la reserva durable se crea como `pending` antes de Meta, pausa/versiona la conversación en la misma transacción y no reintenta automáticamente estados `pending`, `uncertain` o `failed`. Un mismo `clientId` y payload devuelve el mensaje existente; otro payload devuelve 409.
+- PATCH `/conversations/:id` body `{aiPaused?:boolean,status?:'abierta'|'cerrada',assignedTo?:string}` -> Conversation. Cerrar fija `aiPaused=true`; cualquier cambio de pausa/estado incrementa `version` una sola vez. Handoff usa pausa durable.
+- POST `/conversations/:id/suggest` -> Suggestion. Copiloto manual puede sugerir con pausa humana, pero nunca envía ni persiste una respuesta saliente. Recibe el perfil vigente del workspace y conocimiento aprobado.
+- POST `/conversations/:id/simulate` body `{text,clientId?:string}` -> `{messages:Message[],suggestion:Suggestion|null}`: sólo demo; rechaza conversación cerrada, deduplica el `clientId` antes de consumir IA o insertar, ingresa cliente y contesta IA si `autoReply` y `!aiPaused`, con verificación de pausa/versionado justo antes de persistir respuesta. Devuelve el snapshot completo del historial. No llama ni envía a Meta.
+- GET `/knowledge` -> Knowledge[]. POST `/knowledge` body `{title,content,approved}` -> Knowledge. PATCH `/knowledge/:id` -> Knowledge. DELETE `/knowledge/:id` -> `{ok:true}`. La demo admite hasta 30 registros.
+- GET `/tasks` -> Task[]. POST `/tasks` body `{title,dueAt,contactId?}` -> Task. PATCH `/tasks/:id` body `{completed?:boolean,title?:string,dueAt?:string}` -> Task. La demo admite hasta 100 tareas.
+- PATCH `/workspace` body campos Workspace excepto id -> Workspace; `primaryColor` debe ser hex de 6 dígitos. Cambiar segmento no sustituye mensajes ni FAQs editadas.
+- POST `/workspace/preset` body `{segment}` -> Workspace; actualiza explícitamente el perfil y añade una FAQ sólo si falta. La FAQ queda aprobada en demo y en borrador (`approved=false`) en privado para que el propietario confirme horarios/requisitos. No borra contactos ni contenido existente.
+- GET `/connection` -> connection de Session + `{missing:string[],workspaceId:string,webhookPath:string}`; `WA_GRAPH_API_VERSION` es obligatorio y debe cumplir `/^v[0-9]{1,3}\.0$/`; nunca devuelve secretos. Faltantes/configuración no validada bloquean publicación.
+- GET/POST `/whatsapp/webhook`: validación Meta. Sin env completas y versión Graph validada no acepta entradas; HMAC obligatorio sobre body crudo; guardar/deduplicar mensaje antes del 200. Timestamps inbound no finitos/futuros se descartan y los antiguos no retroceden `last_inbound_at`. Status outbound sólo actualiza mensajes existentes por hash externo y scope de workspace; no hay IA automática en producción.
+
+La demo aplica límites persistentes de 100 contactos, 30 conocimientos, 100 tareas y 200 mensajes por conversación; la creación global diaria permite 100 demos. Estas cuotas demo no se aplican al modo privado. Errores de JSON son 400, cuerpos grandes 413 y excepciones no previstas responden JSON sanitizado 500 sin SQL, stack, secretos ni PII.

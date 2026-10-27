@@ -59,14 +59,22 @@ export function serveStatic(app: Express) {
   }
 
   app.use(express.static(distPath));
+  app.get("/privacidad", (_req, res) => {
+    res.sendFile(path.resolve(distPath, "privacidad.html"));
+  });
 
   // the app's not-found page keeps a real 404 status for crawlers
   app.get("/404", (_req, res) => {
-    res.status(404).sendFile(path.resolve(distPath, "index.html"));
+    res.status(404).set("X-Robots-Tag", "noindex").sendFile(path.resolve(distPath, "404.html"));
   });
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  // Only known CRM routes get the SPA; unknown URLs keep their true status.
+  app.get("*", (req, res) => {
+    const known = /^\/(demo|app)(\/(overview|inbox|pipeline|contacts|knowledge|followups|settings))?\/?$/.test(req.path);
+    if (known || req.path === "/") {
+      res.set("Cache-Control", "private, no-store").sendFile(path.resolve(distPath, "index.html"));
+      return;
+    }
+    res.status(404).set("X-Robots-Tag", "noindex").sendFile(path.resolve(distPath, "404.html"));
   });
 }
