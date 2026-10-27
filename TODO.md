@@ -12,7 +12,7 @@
 - [x] Atribución y licencia de las piezas open source adaptadas; documentación de despliegue, diferencias de arquitectura, preparación por cliente y limitaciones; escaneo de identidad excluida y secretos antes de guardar.
 - [x] Tipos, build y pruebas de scoping/handoff/ventana correctos; revisión de integración completada y checkpoint confirmado `83f5fdb5cd8687392de56e5de9b492b489d241c7`.
 - [x] GitHub privado con confirmación del propietario y transferencia verificada/completada en `HenrykSoto99/etc-everythingcounts`.
-- [ ] Publicación con URL permanente: con GitHub como repositorio activo, la publicación está disponible desde el panel del proyecto, no por la herramienta de publicación del asistente. Pendiente pulsar Publicar en el panel. No se afirma una URL pública ni un despliegue exitoso.
+- [ ] Publicación con URL permanente: GitHub permanece como repositorio privado activo; el panel y la publicación automática habilitada para nuevos commits en `main` son los flujos disponibles. Nueva autorización de GitHub verificada el 27 de octubre de 2026; nuevo intento mediante actualización documental de entrega. Confirmar resultado y versión antes de afirmar una URL pública o un despliegue exitoso. No se completó un cambio al repositorio administrado.
 
 Evidencia y límites de las comprobaciones en `docs/VALIDATION.md`. No se activó ni se probó WhatsApp real.
 

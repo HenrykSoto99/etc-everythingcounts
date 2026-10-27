@@ -51,3 +51,7 @@ Ajustes permite seleccionar IA administrada o modelo propio de OpenAI, Gemini o 
 ## Comprobaciones de interfaz
 
 Con Chromium instalado y el servicio iniciado, `node scripts/check-responsive.mjs` comprueba laptop, tablet y celular; `node scripts/check-interactions.mjs` comprueba arrastre, chat, preferencias y contraseña; `node scripts/check-touch-drag.mjs` comprueba el gesto táctil. Usan exclusivamente datos de demo, no envían correos ni mensajes reales. La ruta del ejecutable es configurable mediante `QA_CHROMIUM_PATH`. [Validación](docs/VALIDATION.md) registra resultados y límites reales.
+
+## Publicación
+
+El repositorio continúa privado y activo en GitHub. La configuración del proyecto tiene publicación automática habilitada para los nuevos commits aceptados en `main`; también puede publicarse desde el panel. Una solicitud no equivale a un despliegue exitoso. [Publicación y recuperación](docs/DEPLOYMENT.md) documenta el fallo previo de acceso al clone, la nueva autorización y las configuraciones necesarias antes de activar clientes reales.

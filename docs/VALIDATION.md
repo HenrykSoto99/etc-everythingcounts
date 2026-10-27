@@ -34,4 +34,8 @@ Google permanece como destino pendiente, no como un enlace roto o inventado. Los
 
 El repositorio privado conectado es `https://github.com/HenrykSoto99/etc-everythingcounts`. Su versión anterior fue transferida y confirmada. Esta ampliación se guarda como un nuevo commit sin reescribir la historia; confirmar su SHA en el recibo de checkpoint y GitHub.
 
-Con GitHub como repositorio activo, la publicación se realiza desde el panel del proyecto. No se afirma una publicación ni URL permanente a partir de un build, Preview o commit. La conexión real, el correo y las claves propias continúan pendientes de configuración protegida.
+La comprobación del 27 de octubre de 2026 a las 09:08, después de la autorización informada por el propietario, confirmó acceso ADMIN, repositorio privado y la versión `5436417436e861e1b6ee60be304469f446baef9c` alineada entre GitHub y el espacio de trabajo. No había cambios de código pendientes. El intento anterior de publicar esa versión seguía marcado como fallido en el clone; no se atribuye ese fallo al código de la aplicación.
+
+La configuración consultada tiene publicación automática habilitada. Esta actualización documental se guarda como un nuevo commit en `main` para registrar la entrega y solicitar un nuevo intento por el flujo automático. La publicación también puede solicitarse desde el panel. No se afirma éxito ni URL permanente a partir de una autorización, build, Preview, commit o solicitud enviada.
+
+El repositorio activo sigue en GitHub: no se completó ninguna transferencia al repositorio administrado. La conexión real de WhatsApp, el correo, el origen HTTPS y las claves propias continúan pendientes de configuración protegida. Ver `docs/DEPLOYMENT.md` para el diagnóstico y los requisitos de puesta en marcha.
